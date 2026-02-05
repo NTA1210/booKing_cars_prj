@@ -1,0 +1,60 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+    <div class="page-header">
+        <h2>Cars</h2>
+        <a href="/api/cars/view/create" class="btn btn-primary">Add Car</a>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price/Day</th>
+                    <th>Owner</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (cars && cars.length > 0) { %>
+                    <% cars.forEach(car => { %>
+                        <tr>
+                            <td><%= car.name %></td>
+                            <td><%= new Intl.NumberFormat('vi-VN', {
+                                style: 'currency',
+                                currency: 'VND'
+                              }).format(car.price) %></td>
+                            <td><%= car.ownerId ? car.ownerId.name : 'N/A' %></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="/api/cars/view/edit/<%= car._id %>" class="btn btn-edit">Edit</a>
+                                    <button onclick="deleteCar('<%= car._id %>')" class="btn btn-danger">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr class="empty-state">
+                        <td colspan="4">No cars found</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    async function deleteCar(id) {
+        if (!confirm('Are you sure you want to delete this car?')) return;
+        
+        try {
+            await apiCall(`/api/cars/${id}`, 'DELETE');
+            window.location.reload();
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+</script>
+
+<%- include('../partials/footer') %>

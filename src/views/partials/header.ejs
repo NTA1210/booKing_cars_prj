@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Car Management System</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script>
+      // Helper function for API calls
+      async function apiCall(url, method, body = null) {
+        const options = {
+          method: method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        if (body) {
+          options.body = JSON.stringify(body);
+        }
+        const response = await fetch(url, options);
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || "Something went wrong");
+        }
+        return response;
+      }
+
+      function formatMoney(amount) {
+        const formattedAmount = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(amount);
+        return formattedAmount;
+      }
+    </script>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav>
+          <ul>
+            <li><a href="/api/cars/view">Cars</a></li>
+            <li><a href="/api/users/view">Users</a></li>
+            <li><a href="/api/bookings/view">Bookings</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+  </body>
+</html>

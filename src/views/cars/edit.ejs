@@ -1,0 +1,57 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+    <div class="page-header">
+        <h2>Edit Car</h2>
+    </div>
+
+    <form id="editCarForm">
+        <div class="form-group">
+            <label for="name">Car Name</label>
+            <input type="text" id="name" name="name" value="<%= car.name %>" required>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price per Day</label>
+            <input type="number" id="price" name="price" value="<%= car.price %>" min="0" step="0.01" required>
+        </div>
+
+        <div class="form-group">
+            <label for="ownerId">Owner</label>
+            <select id="ownerId" name="ownerId" required>
+                <option value="">Select owner</option>
+                <% users.forEach(user => { %>
+                    <option value="<%= user._id %>" <%= car.ownerId && car.ownerId._id.toString() === user._id.toString() ? 'selected' : '' %>>
+                        <%= user.name %> (<%= user.role %>)
+                    </option>
+                <% }); %>
+            </select>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a href="/api/cars/view" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.getElementById('editCarForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = {
+            name: document.getElementById('name').value,
+            price: document.getElementById('price').value,
+            ownerId: document.getElementById('ownerId').value
+        };
+
+        try {
+            await apiCall('/api/cars/<%= car._id %>', 'PUT', formData);
+            alert('Car updated successfully!');
+            window.location.href = '/api/cars/view';
+        } catch (error) {
+            alert(error.message);
+        }
+    });
+</script>
+
+<%- include('../partials/footer') %>

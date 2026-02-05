@@ -1,0 +1,39 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+    <div class="page-header">
+        <h2>Users</h2>
+        <a href="/api/users/view/create" class="btn btn-primary">Add User</a>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (users && users.length > 0) { %>
+                    <% users.forEach(user => { %>
+                        <tr>
+                            <td><%= user.name %></td>
+                            <td>
+                                <span class="status-badge <%= user.role.toLowerCase() %>">
+                                    <%= user.role %>
+                                </span>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr class="empty-state">
+                        <td colspan="3">No users found</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
