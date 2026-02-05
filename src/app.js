@@ -3,6 +3,7 @@ const path = require("path");
 const appRouter = require("./routes");
 const connectToDatabase = require("./config/connection");
 require("dotenv").config();
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
@@ -18,7 +19,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api", appRouter);
 
-app.listen(3000, async () => {
+app.listen(PORT, async () => {
   console.log("Server is running on port 3000");
   await connectToDatabase();
 });
